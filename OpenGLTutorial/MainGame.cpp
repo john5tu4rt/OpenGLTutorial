@@ -19,6 +19,7 @@ MainGame::MainGame() : m_window(nullptr),
 
 
 MainGame::~MainGame() {
+
 }
 
 void MainGame::run() {
@@ -55,11 +56,17 @@ void MainGame::initSystems() {
 		fatalError("Could not initialize glew");
 	}
 
+	// If successful initialize buffer to have 2 window buffers, 1 to draw to and 1 to clear
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+	// Set background color
+	glClearColor(0.f, 0.f, 0.f, 0.f);
 }
 
 void MainGame::gameLoop() {
 	while (m_gameState != GameState::EXIT) {
 		processInput();
+		drawGame();
 	}
 }
 
@@ -75,4 +82,14 @@ void MainGame::processInput() {
 			break;
 		}
 	}
+}
+
+void MainGame::drawGame() {
+	glClearDepth(1.f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear both color and depth buffers
+
+
+
+	// after complete swap buffers
+	SDL_GL_SwapWindow(m_window);
 }
