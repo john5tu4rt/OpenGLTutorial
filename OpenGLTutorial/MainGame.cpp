@@ -88,7 +88,19 @@ void MainGame::drawGame() {
 	glClearDepth(1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear both color and depth buffers
 
+	// IMMEDIATE MODE ONLY FOR LEARN
+	glEnableClientState(GL_COLOR_ARRAY);
+	
+	glBegin(GL_TRIANGLES);
 
+	glColor3f(1.f, 0.f, 0.f);
+	
+	glVertex2f(0.f, 0.f);
+	glVertex2f(0.f, 500.f);
+	glVertex2f(500.f, 500.f);
+
+	glEnd();
+	// END IMMEDIATE MODE
 
 	// after complete swap buffers
 	SDL_GL_SwapWindow(m_window);
