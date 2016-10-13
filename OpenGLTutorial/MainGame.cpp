@@ -1,8 +1,15 @@
 #include "MainGame.h"
 
+#include <string>
 #include <iostream>
 
-
+void fatalError(std::string errorString) {
+	std::cout << errorString << '\n' << "Enter any key to quit" << '\n';
+	int tmp;
+	std::cin >> tmp;
+	SDL_Quit();
+	exit(1);
+}
 
 MainGame::MainGame() : m_window(nullptr),
 					m_screenWidth(1024),
@@ -20,6 +27,9 @@ void MainGame::run() {
 }
 
 void MainGame::initSystems() {
+
+	// Initialize SDL
+
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	m_window = SDL_CreateWindow("Game Engine",
@@ -28,6 +38,23 @@ void MainGame::initSystems() {
 								m_screenWidth,
 								m_screenHeight,
 								SDL_WINDOW_OPENGL);
+	if (m_window == nullptr) {
+		fatalError("SDL Window could not be created");
+	}
+
+	// If successful create Open GL context
+
+	SDL_GLContext glContext = SDL_GL_CreateContext(m_window);
+	if (glContext == nullptr) {
+		fatalError("SDL_GLContext could not be created");
+	}
+
+	// If successful initialize glew (useful for hardware compatibility)
+	GLenum error = glewInit();
+	if (error != GLEW_OK) {
+		fatalError("Could not initialize glew");
+	}
+
 }
 
 void MainGame::gameLoop() {
