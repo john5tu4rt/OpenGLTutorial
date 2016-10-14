@@ -51,4 +51,15 @@ void Sprite::init(int x, int y, int width, int height) {
 }
 
 void Sprite::draw() {
+	glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
+
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(0, 2, GL_INT, GL_FALSE, 0, 0);
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDisableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
