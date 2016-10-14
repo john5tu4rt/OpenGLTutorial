@@ -24,6 +24,10 @@ MainGame::~MainGame() {
 
 void MainGame::run() {
 	initSystems();
+
+	//Temp sprite init
+	m_sprite.init(-1.f, -1.f, 1.f, 1.f);
+
 	gameLoop();
 }
 
@@ -87,6 +91,8 @@ void MainGame::processInput() {
 void MainGame::drawGame() {
 	glClearDepth(1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear both color and depth buffers	
+
+	m_sprite.draw();
 
 	// after complete swap buffers
 	SDL_GL_SwapWindow(m_window);

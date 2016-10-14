@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Sprite.h"
+
 #include <SDL\SDL.h>
 #include <GL\glew.h>
 
@@ -26,5 +28,7 @@ private:
 	int m_screenWidth;
 	int m_screenHeight;
 	GameState m_gameState;
+
+	Sprite m_sprite;
 };
 

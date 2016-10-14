@@ -12,8 +12,7 @@ Sprite::~Sprite() {
 		glDeleteBuffers(1,&m_vboID);
 	}
 }
-
-void Sprite::init(int x, int y, int width, int height) {
+void Sprite::init(float x, float y, float width, float height) {
 	m_x = x;
 	m_y = y;
 	m_width = width;
@@ -23,7 +22,7 @@ void Sprite::init(int x, int y, int width, int height) {
 		glGenBuffers(1, &m_vboID);
 	}
 
-	int vertexData[12]; // 6 vertices with 2 co ords each
+	float vertexData[12]; // 6 vertices with 2 co ords each
 
 	vertexData[0] = x + width;
 	vertexData[1] = y + height;
@@ -55,7 +54,7 @@ void Sprite::draw() {
 
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(0, 2, GL_INT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
