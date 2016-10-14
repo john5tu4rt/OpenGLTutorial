@@ -15,6 +15,7 @@ GLSLProgram::~GLSLProgram() {
 }
 
 void GLSLProgram::compileShaders(const std::string & vertexShaderFilePath, const std::string & fragmentShaderFilePath) {
+
 	m_vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	if (m_vertexShaderID == 0) {
 		fatalError("Vertex shader failed to be created");
@@ -30,6 +31,34 @@ void GLSLProgram::compileShaders(const std::string & vertexShaderFilePath, const
 }
 
 void GLSLProgram::linkShaders() {
+
+	//Create a program object
+	m_programID = glCreateProgram();
+
+	glAttachShader(m_programID, m_vertexShaderID);
+	glAttachShader(m_programID, m_fragmentShaderID);
+
+	// Link out program
+	glLinkProgram(m_programID);
+
+	GLint isLinked{ 0 };
+	glGetProgramiv(m_programID, GL_LINK_STATUS, &isLinked);
+	if (isLinked == GL_FALSE) {
+		GLint maxLength{ 0 };
+		glGetProgramiv(m_programID, GL_INFO_LOG_LENGTH, &maxLength);
+
+		std::vector<GLchar> infoLog(maxLength);
+		glGetProgramInfoLog(m_programID, maxLength, &maxLength, &infoLog[0]);
+
+		//delete program
+		glDeleteProgram(m_programID);
+		//delete shaders
+		glDeleteShader(m_vertexShaderID);
+		glDeleteShader(m_fragmentShaderID);
+
+		std::printf("%s\n", &(infoLog[0]));
+		fatalError("Shaders failed to link");
+	}
 }
 
 void GLSLProgram::compileShader(const std::string & filePath, const GLuint& shaderID) {
@@ -60,13 +89,13 @@ void GLSLProgram::compileShader(const std::string & filePath, const GLuint& shad
 		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &maxLength);
 
 		//The maxLength includes the NULL character
-		std::vector<char> errorLog(maxLength);
-		glGetShaderInfoLog(shaderID, maxLength, &maxLength, &errorLog[0]);
+		std::vector<GLchar> infoLog(maxLength);
+		glGetShaderInfoLog(shaderID, maxLength, &maxLength, &infoLog[0]);
 
 		//exit with failure.
 		glDeleteShader(shaderID);  // don't leak the shader
 
-		std::printf("%s\n", &(errorLog[0]));
+		std::printf("%s\n", &(infoLog[0]));
 		fatalError("Shader " + filePath + " failed to compile");
 	}
 }
