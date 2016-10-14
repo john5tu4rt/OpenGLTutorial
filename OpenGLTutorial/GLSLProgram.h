@@ -17,6 +17,9 @@ public:
 
 	void addAttribute(const std::string& attributeName);
 
+	void use();
+	void unuse();
+
 private:
 	int m_numAttributes;
 	void compileShader(const std::string& filePath, const GLuint& shaderID);

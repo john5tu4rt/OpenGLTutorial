@@ -24,6 +24,12 @@ void MainGame::run() {
 	gameLoop();
 }
 
+void MainGame::initShaders() {
+	m_colorProgram.compileShaders("Shaders/colorShader.vert", "Shaders/colorShader.frag");
+	m_colorProgram.addAttribute("vertexPosition");
+	m_colorProgram.linkShaders();
+}
+
 void MainGame::initSystems() {
 
 	// Initialize SDL
@@ -58,6 +64,9 @@ void MainGame::initSystems() {
 
 	// Set background color
 	glClearColor(0.f, 0.f, 0.f, 0.f);
+
+	//Initialise Shaders
+	initShaders();
 }
 
 void MainGame::gameLoop() {
@@ -85,7 +94,11 @@ void MainGame::drawGame() {
 	glClearDepth(1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear both color and depth buffers	
 
+	m_colorProgram.use();
+
 	m_sprite.draw();
+
+	m_colorProgram.unuse();
 
 	// after complete swap buffers
 	SDL_GL_SwapWindow(m_window);

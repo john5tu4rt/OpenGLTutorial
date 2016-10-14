@@ -73,6 +73,21 @@ void GLSLProgram::addAttribute(const std::string & attributeName) {
 	glBindAttribLocation(m_programID, m_numAttributes++, attributeName.c_str());	
 }
 
+void GLSLProgram::use() {
+	glUseProgram(m_programID);
+
+	for (auto i = 0; i < m_numAttributes; ++i) {
+		glEnableVertexAttribArray(i);
+	}
+}
+
+void GLSLProgram::unuse() {
+	glUseProgram(0);
+	for (auto i = 0; i < m_numAttributes; ++i) {
+		glDisableVertexAttribArray(i);
+	}
+}
+
 void GLSLProgram::compileShader(const std::string & filePath, const GLuint& shaderID) {
 
 	std::ifstream vertexFile(filePath);

@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Sprite.h"
-
 #include <SDL\SDL.h>
 #include <GL\glew.h>
+
+#include "Sprite.h"
+#include "GLSLProgram.h"
 
 enum class GameState {
 	PLAY,
@@ -19,6 +20,7 @@ public:
 
 private:
 
+	void initShaders();
 	void initSystems();
 	void gameLoop();
 	void processInput();
@@ -30,5 +32,7 @@ private:
 	GameState m_gameState;
 
 	Sprite m_sprite;
+
+	GLSLProgram m_colorProgram;
 };
 
