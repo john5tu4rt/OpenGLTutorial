@@ -59,6 +59,13 @@ void GLSLProgram::linkShaders() {
 		std::printf("%s\n", &(infoLog[0]));
 		fatalError("Shaders failed to link");
 	}
+
+	// ALways detach shaders after a successful link
+	glDetachShader(m_programID, m_vertexShaderID);
+	glDetachShader(m_programID, m_fragmentShaderID);
+	//delete shaders
+	glDeleteShader(m_vertexShaderID);
+	glDeleteShader(m_fragmentShaderID);
 }
 
 void GLSLProgram::compileShader(const std::string & filePath, const GLuint& shaderID) {
