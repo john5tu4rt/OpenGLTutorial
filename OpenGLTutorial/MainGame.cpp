@@ -2,14 +2,7 @@
 
 #include <string>
 #include <iostream>
-
-void fatalError(std::string errorString) {
-	std::cout << errorString << '\n' << "Enter any key to quit" << '\n';
-	int tmp;
-	std::cin >> tmp;
-	SDL_Quit();
-	exit(1);
-}
+#include "Errors.h"
 
 MainGame::MainGame() : m_window(nullptr),
 					m_screenWidth(1024),
