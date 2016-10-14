@@ -128,6 +128,10 @@
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Sprite.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\colorShader.frag" />
+    <None Include="Shaders\colorShader.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
