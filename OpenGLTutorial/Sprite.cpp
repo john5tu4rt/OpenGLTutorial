@@ -8,6 +8,9 @@ Sprite::Sprite() {
 
 
 Sprite::~Sprite() {
+	if (m_vboID != 0) {
+		glDeleteBuffers(1,&m_vboID);
+	}
 }
 
 void Sprite::init(int x, int y, int width, int height) {
@@ -20,7 +23,7 @@ void Sprite::init(int x, int y, int width, int height) {
 		glGenBuffers(1, &m_vboID);
 	}
 
-	float vertexData[12]; // 6 vertices with 2 co ords each
+	int vertexData[12]; // 6 vertices with 2 co ords each
 
 	vertexData[0] = x + width;
 	vertexData[1] = y + height;
@@ -39,6 +42,11 @@ void Sprite::init(int x, int y, int width, int height) {
 
 	vertexData[10] = x + width;
 	vertexData[11] = y + height;
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 }
 
