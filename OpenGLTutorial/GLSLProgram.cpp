@@ -5,7 +5,8 @@
 
 using namespace std::string_literals;
 
-GLSLProgram::GLSLProgram() : m_programID(0),
+GLSLProgram::GLSLProgram() : m_numAttributes(0),
+							m_programID(0),
 							m_vertexShaderID(0),
 							m_fragmentShaderID(0) {
 }
@@ -66,6 +67,10 @@ void GLSLProgram::linkShaders() {
 	//delete shaders
 	glDeleteShader(m_vertexShaderID);
 	glDeleteShader(m_fragmentShaderID);
+}
+
+void GLSLProgram::addAttribute(const std::string & attributeName) {
+	glBindAttribLocation(m_programID, m_numAttributes++, attributeName.c_str());	
 }
 
 void GLSLProgram::compileShader(const std::string & filePath, const GLuint& shaderID) {

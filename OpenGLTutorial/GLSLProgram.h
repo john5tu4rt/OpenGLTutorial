@@ -15,8 +15,10 @@ public:
 
 	void linkShaders();
 
-private:
+	void addAttribute(const std::string& attributeName);
 
+private:
+	int m_numAttributes;
 	void compileShader(const std::string& filePath, const GLuint& shaderID);
 
 	GLuint m_programID;
