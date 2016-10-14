@@ -16,6 +16,9 @@ public:
 	void linkShaders();
 
 private:
+
+	void compileShader(const std::string& filePath, const GLuint& shaderID);
+
 	GLuint m_programID;
 	GLuint m_vertexShaderID;
 	GLuint m_fragmentShaderID;

@@ -25,10 +25,19 @@ void GLSLProgram::compileShaders(const std::string & vertexShaderFilePath, const
 		fatalError("Fragment shader failed to be created");
 	}
 
-	std::ifstream vertexFile(vertexShaderFilePath);
+	compileShader(vertexShaderFilePath, m_vertexShaderID);
+	compileShader(fragmentShaderFilePath, m_fragmentShaderID);
+}
+
+void GLSLProgram::linkShaders() {
+}
+
+void GLSLProgram::compileShader(const std::string & filePath, const GLuint& shaderID) {
+
+	std::ifstream vertexFile(filePath);
 	if (vertexFile.fail()) {
-		perror(vertexShaderFilePath.c_str());
-		fatalError("failed to open " + vertexShaderFilePath);
+		perror(filePath.c_str());
+		fatalError("failed to open " + filePath);
 	} // no need to close the fstream here as this is a local only function so will be closed when compileShader goes out of scope
 
 	auto fileContents = ""s;
@@ -39,28 +48,25 @@ void GLSLProgram::compileShaders(const std::string & vertexShaderFilePath, const
 	}
 
 	const auto contentsPtr = fileContents.c_str();
-	glShaderSource(m_vertexShaderID, 1, &contentsPtr, nullptr);
+	glShaderSource(shaderID, 1, &contentsPtr, nullptr);
 
-	glCompileShader(m_vertexShaderID);
+	glCompileShader(shaderID);
 
-	GLint success { 0 };
-	glGetShaderiv(m_vertexShaderID, GL_COMPILE_STATUS, &success);
+	GLint success{ 0 };
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
 
 	if (success == GL_FALSE) {
 		GLint maxLength{ 0 };
-		glGetShaderiv(m_vertexShaderID, GL_INFO_LOG_LENGTH, &maxLength);
+		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &maxLength);
 
 		//The maxLength includes the NULL character
 		std::vector<char> errorLog(maxLength);
-		glGetShaderInfoLog(m_vertexShaderID, maxLength, &maxLength, &errorLog[0]);
+		glGetShaderInfoLog(shaderID, maxLength, &maxLength, &errorLog[0]);
 
 		//exit with failure.
-		glDeleteShader(m_vertexShaderID);  // don't leak the shader
+		glDeleteShader(shaderID);  // don't leak the shader
 
 		std::printf("%s\n", &(errorLog[0]));
-		fatalError("Vertex shader failed to compile");		
+		fatalError("Shader " + filePath + " failed to compile");
 	}
-}
-
-void GLSLProgram::linkShaders() {
 }
