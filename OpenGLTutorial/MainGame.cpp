@@ -73,7 +73,7 @@ void MainGame::initSystems() {
 
 void MainGame::gameLoop() {
 	while (m_gameState != GameState::EXIT) {
-		m_time += 0.01; // timestep
+		m_time += 0.01f; // timestep
 		processInput();
 		drawGame();
 	}

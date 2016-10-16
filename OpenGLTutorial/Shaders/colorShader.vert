@@ -8,6 +8,7 @@ in vec2 vertexPosition;
 in vec4 vertexColor;
 
 out vec4 fragmentColor;
+out vec2 fragmentPosition;
 
 void main() {
 	//set the xy position on screen
@@ -19,4 +20,7 @@ void main() {
 
 	//set the fragment color from the passed vertexcolor data
 	fragmentColor = vertexColor;
+
+	//set the fragment position from the passed vertexposition data
+	fragmentPosition = vertexPosition;
 }
