@@ -50,6 +50,9 @@ void Sprite::init(float x, float y, float width, float height) {
 		i.color.b = 255;
 		i.color.a = 255;
 	}
+
+
+
 	//Tell openGL to bind our vertex buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
 	//Upload the data to the GPU
