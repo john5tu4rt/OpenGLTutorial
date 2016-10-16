@@ -30,6 +30,7 @@ private:
 	int m_screenWidth;
 	int m_screenHeight;
 	GameState m_gameState;
+	float m_time;
 
 	Sprite m_sprite;
 
