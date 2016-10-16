@@ -1,5 +1,7 @@
 #include "Sprite.h"
+#include "Vertex.h"
 
+#include <cstddef>
 
 
 Sprite::Sprite() {
@@ -22,43 +24,65 @@ void Sprite::init(float x, float y, float width, float height) {
 		glGenBuffers(1, &m_vboID);
 	}
 
-	float vertexData[12]; // 6 vertices with 2 co ords each
+	Vertex vertexData[6]; // 6 vertices with 2 co ords each
 
-	vertexData[0] = x + width;
-	vertexData[1] = y + height;
+	vertexData[0].position.x = x + width;
+	vertexData[0].position.y = y + height;
 
-	vertexData[2] = x;
-	vertexData[3] = y + height;
+	vertexData[1].position.x = x;
+	vertexData[1].position.y = y + height;
+	
+	vertexData[2].position.x = x;
+	vertexData[2].position.y = y;
+	
+	vertexData[3].position.x = x;
+	vertexData[3].position.y = y;
+	
+	vertexData[4].position.x = x + width;
+	vertexData[4].position.y = y;
+	
+	vertexData[5].position.x = x + width;
+	vertexData[5].position.y = y + height;
 
-	vertexData[4] = x;
-	vertexData[5] = y;
-
-	vertexData[6] = x;
-	vertexData[7] = y;
-
-	vertexData[8] = x + width;
-	vertexData[9] = y;
-
-	vertexData[10] = x + width;
-	vertexData[11] = y + height;
-
+	for (auto &i : vertexData) {
+		i.color.r = 255;
+		i.color.g = 0;
+		i.color.b = 255;
+		i.color.a = 255;
+	}
+	//Tell openGL to bind our vertex buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
+	//Upload the data to the GPU
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
+
+	//Unbind the buffer (optional)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 }
 
 void Sprite::draw() {
+
+	//bind the buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
 
+	//Tell openGL that we want to use the first attribute array,
+	//We only need one since we are only using posititon
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	//This is the position attribute pointer
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
 
+	//This is the color attribute pointer
+	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+
+	//Draw the 6 vertices to screen
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
+
+	//Disable the vertex attrib array - Necessary
 	glDisableVertexAttribArray(0);
 
+	//Unbind the VBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
