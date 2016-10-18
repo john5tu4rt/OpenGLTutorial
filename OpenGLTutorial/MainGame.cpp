@@ -1,8 +1,10 @@
 #include "MainGame.h"
+#include "Errors.h"
+#include "ImageLoader.h"
 
 #include <string>
 #include <iostream>
-#include "Errors.h"
+
 
 MainGame::MainGame() : m_window(nullptr),
 					m_screenWidth(1024),
@@ -21,6 +23,9 @@ void MainGame::run() {
 
 	//Temp sprite init
 	m_sprite.init(-1.f, -1.f, 2.f, 2.f); // full window sprite
+
+	//Temp PNG Load
+	m_playerTexture = ImageLoader::loadPNG("Textures/PNG/Coin.png");
 
 	gameLoop();
 }
