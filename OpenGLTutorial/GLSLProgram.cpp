@@ -74,8 +74,7 @@ void GLSLProgram::addAttribute(const std::string & attributeName) {
 }
 
 
-// gl
-GgetUniformLocation returns a GLint not a GLuint
+// glGetUniformLocation returns a GLint not a GLuint
 GLint GLSLProgram::getUniformLocation(const std::string & uniformName) {
 	GLint location = glGetUniformLocation(m_programID, uniformName.c_str());
 	if (location == GL_INVALID_INDEX) {

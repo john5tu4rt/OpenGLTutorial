@@ -6,7 +6,7 @@ bool IOManager::readFileToBuffer(const std::string & filePath, std::vector<unsig
 
 	// file path and type to load
 	std::ifstream file(filePath, std::ios::binary);
-	if (file.fail) {
+	if (file.fail()) {
 		perror(filePath.c_str());
 	}
 
@@ -14,7 +14,7 @@ bool IOManager::readFileToBuffer(const std::string & filePath, std::vector<unsig
 	//Seek to end
 	file.seekg(0, std::ios::end);
 
-	int fileSize = file.tellg(); //returns bytes before location
+	auto fileSize = file.tellg(); //returns bytes before location
 
 	//seek to beginning (reset)
 	file.seekg(0, std::ios::beg);

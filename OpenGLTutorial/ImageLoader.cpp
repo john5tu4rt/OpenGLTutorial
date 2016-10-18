@@ -44,5 +44,7 @@ GLTexture ImageLoader::loadPNG(const std::string & filePath) {
 	//Unbind textures
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	texture.width = width;
+	texture.height = height;
 	return texture;
 }
