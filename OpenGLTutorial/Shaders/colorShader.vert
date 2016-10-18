@@ -6,9 +6,12 @@
 in vec2 vertexPosition;
 //4 color bytes
 in vec4 vertexColor;
+//UV data
+in vec2 vertexUV;
 
 out vec4 fragmentColor;
 out vec2 fragmentPosition;
+out vec2 fragmentUV;
 
 void main() {
 	//set the xy position on screen
@@ -23,4 +26,7 @@ void main() {
 
 	//set the fragment position from the passed vertexposition data
 	fragmentPosition = vertexPosition;
+
+	//set the UV data
+	fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y); //Inverting the y direction due to y being down in openGL
 }

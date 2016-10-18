@@ -26,33 +26,23 @@ void Sprite::init(float x, float y, float width, float height) {
 
 	Vertex vertexData[6]; // 6 vertices with 2 co ords each
 
-	vertexData[0].position.x = x + width;
-	vertexData[0].position.y = y + height;
-
-	vertexData[1].position.x = x;
-	vertexData[1].position.y = y + height;
-	
-	vertexData[2].position.x = x;
-	vertexData[2].position.y = y;
-	
-	vertexData[3].position.x = x;
-	vertexData[3].position.y = y;
-	
-	vertexData[4].position.x = x + width;
-	vertexData[4].position.y = y;
-	
-	vertexData[5].position.x = x + width;
-	vertexData[5].position.y = y + height;
+	vertexData[0].setPosition(x + width, y + height);
+	vertexData[0].setUV(1.f, 1.f);
+	vertexData[1].setPosition(x, y + height);
+	vertexData[1].setUV(0.f, 1.f);
+	vertexData[2].setPosition(x, y);
+	vertexData[2].setUV(0.f, 0.f);
+	vertexData[3].setPosition(x, y);
+	vertexData[3].setUV(0.f, 0.f);
+	vertexData[4].setPosition(x + width, y);
+	vertexData[4].setUV(1.f, 0.f);
+	vertexData[5].setPosition(x + width, y + height);
+	vertexData[5].setUV(1.f, 1.f);
 
 	for (auto &i : vertexData) {
-		i.color.r = 255;
-		i.color.g = 0;
-		i.color.b = 255;
-		i.color.a = 255;
+		i.setColor(40, 40, 40, 255);
 	}
-
-
-
+	
 	//Tell openGL to bind our vertex buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
 	//Upload the data to the GPU
@@ -78,6 +68,9 @@ void Sprite::draw() {
 
 	//This is the color attribute pointer
 	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+
+	//This is the UV attribute pointer
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 
 	//Draw the 6 vertices to screen
 	glDrawArrays(GL_TRIANGLES, 0, 6);

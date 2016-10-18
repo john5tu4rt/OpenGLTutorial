@@ -25,7 +25,7 @@ void MainGame::run() {
 	m_sprite.init(-1.f, -1.f, 2.f, 2.f); // full window sprite
 
 	//Temp PNG Load
-	m_playerTexture = ImageLoader::loadPNG("Textures/PNG/Coin.png");
+	m_playerTexture = ImageLoader::loadPNG("Textures/PNG/CharacterLeft_Walk2.png");
 
 	gameLoop();
 }
@@ -34,6 +34,7 @@ void MainGame::initShaders() {
 	m_colorProgram.compileShaders("Shaders/colorShader.vert", "Shaders/colorShader.frag");
 	m_colorProgram.addAttribute("vertexPosition");
 	m_colorProgram.addAttribute("vertexColor");
+	m_colorProgram.addAttribute("vertexUV");
 	m_colorProgram.linkShaders();
 }
 
@@ -103,14 +104,20 @@ void MainGame::drawGame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear both color and depth buffers	
 
 	m_colorProgram.use();
+	glActiveTexture(GL_TEXTURE0); //can do mutiple textures for same object
+	glBindTexture(GL_TEXTURE_2D, m_playerTexture.id);
 
-	GLuint timeLocation = m_colorProgram.getUniformLocation("time");
+	//send uniform texture location to GPU
+	GLint textureLocation = m_colorProgram.getUniformLocation("mySampler");
+	glUniform1i(textureLocation, 0);
 
-	//send uniform variable to GPU
-	glUniform1f(timeLocation, m_time);
+	//send uniform time variable to GPU, commented out as time is no longer used in gpu compilation
+	//GLuint timeLocation = m_colorProgram.getUniformLocation("time");	
+	//glUniform1f(timeLocation, m_time);
 
 	m_sprite.draw();
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	m_colorProgram.unuse();
 
 	// after complete swap buffers
